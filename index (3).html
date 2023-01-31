@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        const menuList = {
+            burger: [
+                {
+                    name: '🍔',
+                    time: 3000
+                },
+                {
+                    name: '🍟',
+                    time: 1000
+                },
+                {
+                    name: '🥤',
+                    time: 500
+                }
+            ],
+            chicken: [
+                {
+                    name: '🍗',
+                    time: 5000
+                },
+                {
+                    name: '🥔',
+                    time: 2000
+                },
+                {
+                    name: '🍺',
+                    time: 1500
+                }
+            ],
+            avocado: [
+                {
+                    name: '🥑',
+                    time: 3000
+                },
+                {
+                    name: '🍚',
+                    time: 5000
+                },
+                {
+                    name: '🧉',
+                    time: 2000
+                }
+            ]
+        };
+
+        function getFinalResult(result) {
+            console.log(result);
+        }
+
+        function makeCounter() {
+            let count = 1;
+            return function () {
+                return count++;
+            };
+        }
+
+        function createOrder(menuItem, callback) {
+            const orderNumber = ordersCounter();
+            console.log(`Order nubmer ${orderNumber}, accepted`);
+            console.log('Start cooking...');
+
+            const notSortedOrder = [];
+            const expTime = menuItem.reduce((acc, { time }) => acc += time, 0);
+
+            menuItem.forEach(({ name, time }) => {
+                const condition = Math.ceil(Math.random() * 10) < 8;
+                setTimeout(() => {
+                    const fulfilledResult = {
+                        status: condition,
+                        value: name
+                    };
+
+                    const rejectedResult = {
+                        status: condition,
+                        value: name,
+                        reason: 'Somthing went wrong... We are so sorry'
+                    };
+
+                    if (condition) {
+                        notSortedOrder.push(fulfilledResult);
+                    } else {
+                        notSortedOrder.push(rejectedResult);
+                    }
+
+                    if (notSortedOrder.length === menuItem.length) {
+                        console.log(`Order number ${orderNumber} is finished:`);
+                        const sortedOrder = [];
+                        menuItem.forEach((acc, { name }) => {
+                            const x = notSortedOrder.find(el => name === el.value);
+                            sortedOrder.push(x);
+                        }, [])
+                        callback(sortedOrder)
+                    }
+
+                }, time)
+            })
+        }
+
+
+        const ordersCounter = makeCounter()
+        const order1 = createOrder(menuList.burger, getFinalResult);
+        const order2 = createOrder(menuList.chicken, getFinalResult);
+        const order3 = createOrder(menuList.avocado, getFinalResult);
+        const order4 = createOrder(menuList.avocado, getFinalResult);
+        const order5 = createOrder(menuList.chicken, getFinalResult);
+        const order6 = createOrder(menuList.burger, getFinalResult);
+        const order7 = createOrder(menuList.chicken, getFinalResult);
+
+    </script>
+</body>
+
+</html>

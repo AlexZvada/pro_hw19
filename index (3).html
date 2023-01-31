@@ -100,7 +100,7 @@
                             sortedOrder.push(x);
                         })
                         console.log(`Order number ${orderNumber} is finished:`);
-                        callback(sortedOrder)
+                        callback(sortedOrder);
                     }
 
                 }, time)
@@ -108,7 +108,7 @@
         }
 
 
-        const orderCounter = makeCounter()
+        const orderCounter = makeCounter();
         createOrder(menuList.burger, getFinalResult);
         createOrder(menuList.chicken, getFinalResult);
         createOrder(menuList.avocado, getFinalResult);
